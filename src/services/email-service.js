@@ -1,8 +1,11 @@
 const { sender } = require('../config/emailConfig');
 
-const sendBasicEmail = (from, to, mailSubject, mailBody) => {
+const sendBasicEmail = (mailFrom, mailTo, mailSubject, mailBody) => {
   sender.sendMail({
-
+    to: mailTo,
+    from: mailFrom,
+    subject: mailSubject,
+    text: mailBody
   });
 }
 
