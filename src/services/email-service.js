@@ -31,8 +31,18 @@ const createNotification = async (data) => {
   }
 }
 
+const update = async (ticketId, data) => {
+  try {
+    const response = ticketRepository.update(ticketId, {status: data.status});
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   sendBasicEmail,
   fetchPendingEmails,
-  createNotification
+  createNotification,
+  update
 }
