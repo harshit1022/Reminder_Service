@@ -40,9 +40,14 @@ const update = async (ticketId, data) => {
   }
 }
 
+const testingQueue = async (data) => {
+  console.log("Inside service layer", data);
+}
+
 module.exports = {
   sendBasicEmail,
   fetchPendingEmails,
   createNotification,
-  update
+  update,
+  testingQueue
 }

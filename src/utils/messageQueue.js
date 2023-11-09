@@ -1,4 +1,5 @@
 const amqplib = require('amqplib');
+const { MSG_BROKER_URL, EXCHANGE_NAME } = require('../config/serverConfig');
 
 const createChannel = async () => {
   try {
@@ -15,15 +16,16 @@ const createChannel = async () => {
   }
 }
 
-const subscribeMsg = async(channel, service, binding_key) => {
+const subscribeMsg = async(channel, service, binding_key) => { // binding_key will be passed bu user
   try {
-    const applicationQueue = await channel.assertQueue(QUEUE_NAME);
+    const applicationQueue = await channel.assertQueue('QUEUE_NAME');
 
     channel.bindQueue(applicationQueue.queue, EXCHANGE_NAME, binding_key);
 
     channel.consume(applicationQueue.queue, msg => {
-      console.log('received data');
-      console.log(msg.content.toString()); // printing the msg
+      console.log('received data in reminder service {from subscribeMsg function}');
+      //console.log(msg.content.toString()); // printing the msg
+      service(msg.content);
       channel.ack(msg); // acknowledging that msg is consumed by subscriber
     });
   } 
