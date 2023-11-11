@@ -16,16 +16,18 @@ const createChannel = async () => {
   }
 }
 
-const subscribeMsg = async(channel, service, binding_key) => { // binding_key will be passed bu user
+const subscribeMsg = async(channel, service, binding_key) => { // binding_key will be passed by user
   try {
     const applicationQueue = await channel.assertQueue('QUEUE_NAME');
 
     channel.bindQueue(applicationQueue.queue, EXCHANGE_NAME, binding_key);
 
     channel.consume(applicationQueue.queue, msg => {
-      console.log('received data in reminder service {from subscribeMsg function}');
-      //console.log(msg.content.toString()); // printing the msg
-      service(msg.content);
+      //console.log('received data in reminder service {from subscribeMsg function}');
+      console.log(msg.content.toString()); // printing the msg
+      // service(msg.content); // calling service
+      const payload = JSON.parse(msg.content.toString());
+      service(payload);
       channel.ack(msg); // acknowledging that msg is consumed by subscriber
     });
   } 
